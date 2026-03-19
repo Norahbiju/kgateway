@@ -16,6 +16,7 @@ spec:
         urlRewrite:
           path:
             type: ReplacePrefixMatch
+            replacePrefixMatch: /
     backendRefs:
     - name: eycart-service 
       port: 3000
