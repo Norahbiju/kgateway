@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flower-deployment
+  namespace: norah-ns
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: flowerapp
+  template:
+    metadata:
+      labels:
+        app: flowerapp
+    spec:
+      containers:
+        - name: flower-container
+          image: muralisocial123/kyndrl-flower-app:v1.1.0
+          ports:
+            - containerPort: 3015
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "350m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flower-service
+  namespace: norah-ns
+spec:
+  selector:
+    app: flowerapp
+  ports:
+    - port: 3015
+      targetPort: 3015
+  type: ClusterIP
+

@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eycart-deployment
+  namespace: norah-ns
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  selector:
+    matchLabels:
+      app: eycartapp
+  template:
+    metadata:
+      labels:
+        app: eycartapp
+    spec:
+      containers:
+        - name: eycart-container
+          image: muralisocial123/ey-cart:v1.1.0
+          ports:
+            - containerPort: 3000
+          resources:
+            limits:
+              memory: "256Mi"
+              cpu: "350m"
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eycart-service
+  namespace: norah-ns
+spec:
+  selector:
+    app: eycartapp
+  ports:
+    - port: 3000
+      targetPort: 3000
+  type: ClusterIP
