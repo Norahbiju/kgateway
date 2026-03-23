@@ -9,5 +9,5 @@ spec:
       protocol: HTTP
       port: 80
       allowedRoutes:
-      namespaces:
-        from: Same
+        namespaces:
+          from: Same
